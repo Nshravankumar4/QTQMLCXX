@@ -3,6 +3,7 @@
 #include <QQmlContext>
 
 #include "Vehicle.h"
+#include "Telltale.h"
 
 int main(int argc, char *argv[])
 {
@@ -10,9 +11,13 @@ int main(int argc, char *argv[])
 
     Vehicle vehicle;
 
+    Telltale telltale;
+
     QQmlApplicationEngine engine;
 
     engine.rootContext()->setContextProperty("vehicle", &vehicle);
+
+    engine.rootContext()->setContextProperty("telltale",&telltale);
 
     engine.loadFromModule("AutomotiveDashboard", "Main");
 
