@@ -1,23 +1,20 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include <QQmlContext>
+
+#include "Vehicle.h"
 
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
 
+    Vehicle vehicle;
+
     QQmlApplicationEngine engine;
 
-    QObject::connect(
-        &engine,
-        &QQmlApplicationEngine::objectCreationFailed,
-        &app,
-        []() {
-            QCoreApplication::exit(-1);
-        },
-        Qt::QueuedConnection
-        );
+    engine.rootContext()->setContextProperty("vehicle", &vehicle);
 
-    engine.loadFromModule("VehicleHMI", "Main");
+    engine.loadFromModule("AutomotiveDashboard", "Main");
 
     return app.exec();
 }
