@@ -105,3 +105,7 @@ QML automatically updates the UI when the values received from C++ change.
 * Multiple Dashboard Views
 * C++ and QML Integration
 * Reusable QML Components
+*
+* Pretest - Workflow - Build - CICD - AutoBuild.
+<img width="1892" height="641" alt="image" src="https://github.com/user-attachments/assets/36926486-3356-4841-8b3d-2b2fe174b877" />
+<img width="1075" height="183" alt="image" src="https://github.com/user-attachments/assets/bd1f0b43-fbb5-4a01-b265-cbbc7a2a1b0d" />
