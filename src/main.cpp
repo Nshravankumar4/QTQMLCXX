@@ -1,25 +1,14 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
-
-#include "Vehicle.h"
-#include "Telltale.h"
+#include "Dashboard.h"
 
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
-
-    Vehicle vehicle;
-
-    Telltale telltale;
-
+    Dashboard dashboardBackend;
     QQmlApplicationEngine engine;
-
-    engine.rootContext()->setContextProperty("vehicle", &vehicle);
-
-    engine.rootContext()->setContextProperty("telltale",&telltale);
-
+    engine.rootContext()->setContextProperty("dashboardBackend", &dashboardBackend);
     engine.loadFromModule("AutomotiveDashboard", "Main");
-
     return app.exec();
 }
