@@ -27,7 +27,7 @@ qt_add_qml_module(appAutomotiveDashboard
         Main.qml
         Speed.qml
         Telltale.qml
-        QML_FILES StateExample.qml
+        StateExample.qml
 )
 
 target_link_libraries(appAutomotiveDashboard

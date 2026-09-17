@@ -1,0 +1,35 @@
+name: Build Qt 6 Automotive Dashboard
+
+on:
+  push:
+    branches: [ "main", "Nshravankumar4-patch-1" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-windows:
+    name: Build on Windows (Qt 6 + MSVC)
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup MSVC Environment
+        uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Install Qt 6
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: '6.8.0'
+          host: 'windows'
+          target: 'desktop'
+          arch: 'win64_msvc2022_64'
+
+      - name: Configure CMake
+        run: |
+          cmake -B build -S . -G "Ninja"
+
+      - name: Build Project
+        run: |
+          cmake --build build --config Release
