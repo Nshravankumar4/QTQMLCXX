@@ -1,3 +1,4 @@
+
 # Automotive Digital Dashboard
 
 ## Project Overview
@@ -12,6 +13,8 @@ The project separates the application into two parts:
 * **QML** → Handles the dashboard UI and user interaction.
 
 ## How It Works
+<img width="1532" height="803" alt="image" src="https://github.com/user-attachments/assets/eb8e5a83-c915-4dfc-9d7d-e063d5f49a51" />
+<img width="1509" height="794" alt="image" src="https://github.com/user-attachments/assets/055a1832-1460-477c-8757-64dcf2168d57" />
 
 The application works in the following flow:
 
