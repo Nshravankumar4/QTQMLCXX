@@ -10,9 +10,17 @@ Dashboard::Dashboard(QObject *parent)
     m_engineTimer->start(1000);
 }
 
-int Dashboard::speed() const { return m_speed; }
-int Dashboard::rpm() const { return m_rpm; }
-QString Dashboard::gear() const { return m_gears[m_gearIndex]; }
+int Dashboard::speed() const {
+    return m_speed;
+}
+
+int Dashboard::rpm() const {
+    return m_rpm;
+}
+
+QString Dashboard::gear() const {
+    return m_gears[m_gearIndex];
+}
 
 void Dashboard::setSpeed(int speed) {
     if (m_speed != speed) {
