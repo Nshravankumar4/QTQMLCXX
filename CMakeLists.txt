@@ -11,8 +11,12 @@ qt_standard_project_setup(REQUIRES 6.5)
 
 qt_add_executable(appAutomotiveDashboard
     main.cpp
+
     Vehicle.cpp
     Vehicle.h
+
+    Telltale.cpp
+    Telltale.h
 )
 
 qt_add_qml_module(appAutomotiveDashboard
@@ -21,10 +25,9 @@ qt_add_qml_module(appAutomotiveDashboard
 
     QML_FILES
         Main.qml
-        QML_FILES Speed.qml
-        QML_FILES Telltale.qml
-        SOURCES Telltale.cpp
-        SOURCES Telltale.h
+        Speed.qml
+        Telltale.qml
+        QML_FILES StateExample.qml
 )
 
 target_link_libraries(appAutomotiveDashboard
