@@ -1,23 +1,110 @@
-# My Digital Car Dashboard 🚗
+# Automotive Digital Dashboard (Qt 6, QML & C++)
 
-Welcome to my car dashboard project! This is a simple app built with **Qt 6** that shows a digital instrument cluster, just like the screen you see behind the steering wheel in modern cars.
+A modern automotive digital instrument cluster application built using **Qt 6 (Qt Quick / QML)** and **C++17**, configured with **CMake**.
 
-## What does it do?
-It has a sidebar menu that lets you click to switch between two different screens:
+---
 
-1. **🏠 Home Screen**: This is your main driving view. It shows two beautiful, glowing circular gauges—one for your Speed (left) and one for your Engine Power / RPM (right). Right in the middle, you can shift gears (P, R, N, D).
-2. **🗺️ Map Screen**: This is your navigation view. It shows a single Speed gauge on the left so you know how fast you are going, and leaves a big empty space on the right where a GPS map can be added later!
+## 📌 Project Overview
 
-## How does it work behind the scenes?
-We separated the code into two parts so it's super easy to understand:
+This project simulates a digital car dashboard with multiple views. It perfectly demonstrates the separation of business logic (vehicle speed, engine RPM, and gear shifting) in C++ and a highly declarative, beautiful user interface in QML.
 
-* **The Brain (C++)**: We wrote the logic in `Dashboard.cpp` and `Dashboard.h`. This is where the car remembers how fast it's going, what its RPM is, and what gear it is in. 
-* **The Face (QML)**: We designed the beautiful user interface in `Main.qml` and `DialGauge.qml`. This is where we draw the gauges and buttons.
+```
+┌─────────────────────────────────────────────────────────────┐
+│                        QML Frontend                         │
+│                                                             │
+│  [Sidebar Menu]     [Left: Speed Gauge]    [Right: RPM]     │
+│  - Home View        [Center: PRND Gear Selector]            │
+│  - Map View         [Interactive +/- Controls]              │
+│                                                             │
+└──────────────────────────────▲──────────────────────────────┘
+                               │ Property Bindings & Slots
+┌──────────────────────────────▼──────────────────────────────┐
+│                         C++ Backend                         │
+│           Dashboard (Speed, RPM, Gear Logic)                │
+└─────────────────────────────────────────────────────────────┘
+```
 
-The coolest part? We used Qt's `Q_PROPERTY` feature. This acts like an invisible bridge between the Brain and the Face! When the C++ code says "the speed increased," the QML screen instantly updates the speedometer on its own without any extra work.
+---
 
-## How to run it!
-1. Open up **Qt Creator**.
-2. Click **File -> Open File or Project** and select the `CMakeLists.txt` file in this folder.
-3. Click the big green **Run** button at the bottom left. 
-4. Enjoy playing with the buttons to speed up your virtual car!
+## 📁 Repository Structure
+
+```text
+├── CMakeLists.txt         # Modern Qt 6 CMake configuration with QML modules
+├── include/
+│   └── Dashboard.h        # C++ Header: Defines Q_PROPERTIES, Signals, and Slots
+├── src/
+│   ├── main.cpp           # Application entry point; exposes C++ backend to QML
+│   └── Dashboard.cpp      # C++ Source: Implements the logic for Speed, RPM, PRND
+└── qml/
+    ├── Main.qml           # Main window shell & multi-view sidebar layout
+    └── DialGauge.qml      # Beautiful circular gauge component using QtQuick.Shapes
+```
+
+---
+
+## 🚀 Features Implemented So Far
+
+### 1. C++ Backend (`Dashboard.h` & `.cpp`)
+- **`QObject` Architecture**: Uses the Qt Object Model (`Q_OBJECT`) to act as the "brain".
+- **`Q_PROPERTY` System**: Exposes `speed`, `rpm`, and `gear` directly to QML with `READ`, `WRITE`, and `NOTIFY` signals.
+- **Signals & Slots**:
+  - `requestIncreaseSpeed()` & `requestDecreaseSpeed()` slots to safely modify the speed.
+  - Signal emissions (`speedChanged()`, `rpmChanged()`) that instantly notify QML of state changes.
+
+### 2. C++ to QML Integration Bridge
+- Configured in `main.cpp` using `QQmlApplicationEngine`.
+- Injects the `Dashboard` backend object into QML's global scope using `setContextProperty`:
+  - `"dashboardBackend"` -> `Dashboard` instance.
+
+### 3. Declarative UI (QML)
+- **Modular Component Design**: Dedicated `DialGauge.qml` component using Qt 6's powerful `QtQuick.Shapes` for drawing gorgeous, scalable circular gauges.
+- **Multi-View Layout**: A custom interactive Sidebar on the left allowing you to switch between views (e.g., "Home" for a double gauge, and "Map" for a single gauge).
+- **Reactive Data Binding**:
+  - Gauges automatically refresh when `dashboardBackend.speed` updates!
+  - `Connections` block used to gracefully connect UI events to C++ signals.
+- **Interactive Controls**:
+  - `+` and `-` buttons call backend C++ methods directly (`dashboardBackend.requestIncreaseSpeed()`).
+  - "Shift Gear" button easily cycles through Park, Reverse, Neutral, and Drive states!
+
+---
+
+## 🛠️ Prerequisites & Tech Stack
+
+- **C++ Standard**: C++17
+- **Qt Framework**: Qt 6.5 or newer (Qt Quick, Qt Quick Shapes, Qt Quick Controls)
+- **Build System**: CMake 3.16+
+- **Compiler**: GCC / Clang / MSVC with C++17 support
+
+---
+
+## 💻 How to Build and Run
+
+### Option A: Using Qt Creator (Recommended)
+1. Open Qt Creator.
+2. Select **File > Open File or Project...** and choose `CMakeLists.txt`.
+3. Configure the project with a **Qt 6.5+ Desktop Kit** (MSVC or MinGW on Windows, GCC on Linux).
+4. Click **Run** (Ctrl + R).
+
+### Option B: Using CMake Command Line
+```bash
+# 1. Create and navigate to a build directory
+cmake -B build -S . -DCMAKE_PREFIX_PATH="<path_to_your_qt6_installation>"
+
+# 2. Build the project
+cmake --build build
+
+# 3. Run the application
+# Windows:
+.\build\AutomotiveDashboard.exe
+# Linux:
+./build/AutomotiveDashboard
+```
+
+---
+
+## 🗺️ Roadmap & Upcoming Features
+
+- [ ] **GPS Map Integration**: Fill the right side of the "Map" view with an actual navigation component.
+- [ ] **Indicator Animations**: Add blinking turn signals using QML `Timer` or `SequentialAnimation`.
+- [ ] **Theme Switching**: Allow switching the UI between "Day Mode" and "Night Mode".
+- [ ] **Qt 6 `QML_ELEMENT` Migration**: Migrate from legacy `setContextProperty` to declarative `QML_ELEMENT` registration.
