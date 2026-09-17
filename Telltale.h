@@ -9,7 +9,6 @@ class Telltale : public QObject {
 
 public:
     explicit Telltale(QObject *parent = nullptr);
-    int left() const;
 
 signals:
     void selectLefInd();
