@@ -1,23 +1,35 @@
-name: C/C++ CI
+name: Build Qt 6 Automotive Dashboard
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "Nshravankumar4-patch-1" ]
   pull_request:
     branches: [ "main" ]
 
 jobs:
   build:
-
+    name: Build on Ubuntu with Qt 6
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: configure
-      run: ./configure
-    - name: make
-      run: make
-    - name: make check
-      run: make check
-    - name: make distcheck
-      run: make distcheck
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install Qt 6
+        uses: jurplel/install-qt-action@v3
+        with:
+          version: '6.5.3'
+          modules: 'qtdeclarative'
+
+      - name: Install System Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ninja-build libgl1-mesa-dev
+
+      - name: Configure CMake
+        run: |
+          cmake -B build -S . -G Ninja
+
+      - name: Build
+        run: |
+          cmake --build build --config Release
