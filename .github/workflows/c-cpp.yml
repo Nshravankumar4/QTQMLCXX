@@ -7,30 +7,29 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
-    name: Build on Ubuntu with Qt 6
-    runs-on: ubuntu-latest
+  build-windows:
+    name: Build on Windows (Qt 6 + MSVC)
+    runs-on: windows-latest
 
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      - name: Setup MSVC Environment
+        uses: ilammy/msvc-dev-cmd@v1
+
       - name: Install Qt 6
         uses: jurplel/install-qt-action@v4
         with:
-          version: '6.5.3'
-          host: 'linux'
+          version: '6.8.0'
+          host: 'windows'
           target: 'desktop'
-
-      - name: Install System Dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y ninja-build libgl1-mesa-dev
+          arch: 'win64_msvc2022_64'
 
       - name: Configure CMake
         run: |
-          cmake -B build -S . -G Ninja
+          cmake -B build -S . -G "Ninja"
 
-      - name: Build
+      - name: Build Project
         run: |
           cmake --build build --config Release
